@@ -58,6 +58,26 @@
       };
     }
 
+	  const imgTargets = document.querySelectorAll('.slide-in');
+
+	  const loadImg = function(entries, observer) {
+		  const[entry] = entries;
+		  if(!entry.isIntesecting) return;
+
+		  entry.target.addEventListener('load', function() {
+			  entry.target.classList.add('active');
+		  });
+		  observer.unobserve(entry.target);
+	  }
+
+	  const imgObserver = new IntersectionObserver(loading, {
+		  root: null,
+		  threshold: 0.5,
+		  rootMargin: '200px'
+	  });
+
+	  imgTargets.forEach(img => imgObserver.observe(img));
+
   </script>
 
   <style>
