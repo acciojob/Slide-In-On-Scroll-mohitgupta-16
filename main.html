@@ -58,25 +58,25 @@
       };
     }
 
-	  const imgTargets = document.querySelectorAll('.slide-in');
+	const slideInImages = document.querySelectorAll('.slide-in');
 
-	  const loadImg = function(entries, observer) {
-		  const[entry] = entries;
-		  if(!entry.isIntesecting) return;
+      function checkSlide() {
+        slideInImages.forEach(slideInImage => {
+          // half way through the image
+          const slideInAt = (window.scrollY + window.innerHeight) - slideInImage.height / 2;
+          // bottom of the image
+          const imageBottom = slideInImage.offsetTop + slideInImage.height;
+          const isHalfShown = slideInAt > slideInImage.offsetTop;
+          const isNotScrolledPast = window.scrollY < imageBottom;
+          if (isHalfShown && isNotScrolledPast) {
+            slideInImage.classList.add('active');
+          } else {
+            slideInImage.classList.remove('active');
+          }
+        });
+      }
 
-		  entry.target.addEventListener('load', function() {
-			  entry.target.classList.add('active');
-		  });
-		  observer.unobserve(entry.target);
-	  }
-
-	  const imgObserver = new IntersectionObserver(loading, {
-		  root: null,
-		  threshold: 0.5,
-		  rootMargin: '200px'
-	  });
-
-	  imgTargets.forEach(img => imgObserver.observe(img));
+      window.addEventListener('scroll', debounce(checkSlide));
 
   </script>
 
